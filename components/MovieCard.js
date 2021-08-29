@@ -21,10 +21,13 @@ const MovieCard = props => {
           ))}
         </View>
       )}
-      {props.description && (
-        <View style={styles.details}>
-          <Text>{props.description}</Text>
-        </View>
+      {props.overview && (
+        <>
+          <Card.Divider />
+          <View style={styles.description}>
+            <Text style={styles.detail}>{props.overview}</Text>
+          </View>
+        </>
       )}
     </Card>
   );
@@ -34,7 +37,7 @@ const styles = StyleSheet.create({
   root: {
     width: '100%',
     paddingHorizontal: 0,
-    marginHorizontal: 0,
+    margin: 0,
   },
   title: {
     fontSize: 24,
@@ -51,13 +54,16 @@ const styles = StyleSheet.create({
   },
   details: {
     paddingHorizontal: 6,
-    paddingVertical: 4,
+    paddingVertical: 9,
   },
   detail: {
     fontSize: 18,
   },
   detailName: {
     fontWeight: '600',
+  },
+  description: {
+    paddingHorizontal: 6,
   },
 });
 

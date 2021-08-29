@@ -20,14 +20,13 @@ export default function MovieListScreen({navigation}) {
       setIsLoading(true);
 
       try {
-        const movieListData = await (
+        const {results} = await (
           await fetch(
             `https://api.themoviedb.org/3/search/movie?query=${searchVal}&page=1&language=pl-PL&api_key=908c8ee616534e11d253631e8399c456`,
           )
         ).json();
-        console.log(movieListData);
 
-        setData(movieListData.results);
+        setData(results);
       } catch (err) {
         setError(err);
       }
@@ -55,8 +54,12 @@ export default function MovieListScreen({navigation}) {
           data={data}
           renderItem={({item}) => (
             <TouchableOpacity
+              style={styles.movie}
               onPress={() =>
-                navigation.navigate('Movie Details', {title: item.title})
+                navigation.navigate('Movie Details', {
+                  movieId: item.id,
+                  title: item.title,
+                })
               }>
               <MovieCard
                 title={item.title}
@@ -82,5 +85,9 @@ const styles = StyleSheet.create({
   searchBar: {
     borderBottomWidth: 1,
     borderBottomColor: 'black',
+  },
+  movie: {
+    marginBottom: 10,
+    backgroundColor: 'red',
   },
 });
