@@ -47,6 +47,7 @@ export default function MovieListScreen({navigation}) {
         value={searchVal}
         onChangeText={searchHander}
         placeholder="Let's find a movie..."
+        showLoading={isLoading}
       />
       {isLoading && <LinearProgress />}
       {data && !isLoading && !error && (
@@ -60,8 +61,10 @@ export default function MovieListScreen({navigation}) {
               <MovieCard
                 title={item.title}
                 posterPath={item.poster_path}
-                popularity={item.popularity}
-                voteCount={item.vote_count}
+                details={[
+                  {name: 'popularity', value: item.popularity},
+                  {name: 'vote count', value: item.vote_count},
+                ]}
               />
             </TouchableOpacity>
           )}
