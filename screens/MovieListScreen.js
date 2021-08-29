@@ -1,8 +1,10 @@
 import React, {useState, useEffect} from 'react';
-import {View, FlatList, TouchableOpacity, StyleSheet} from 'react-native';
+import {View, Text, StyleSheet} from 'react-native';
 import {SearchBar, LinearProgress} from 'react-native-elements';
 
-import MovieCard from '../components/MovieCard';
+import MovieList from '../components/MovieList';
+import ErrorView from '../components/ErrorView';
+import MoreButton from '../components/MoreButton';
 
 export default function MovieListScreen({navigation}) {
   const [data, setData] = useState();
@@ -12,7 +14,7 @@ export default function MovieListScreen({navigation}) {
   const [searchVal, setSearchVal] = useState();
 
   useEffect(() => {
-    if (!searchVal) return;
+    if (!searchVal | error) return;
 
     let timeout;
 
@@ -22,7 +24,7 @@ export default function MovieListScreen({navigation}) {
       try {
         const {results} = await (
           await fetch(
-            `https://api.themoviedb.org/3/search/movie?query=${searchVal}&page=1&language=pl-PL&api_key=908c8ee616534e11d253631e8399c456`,
+            `https://api.themovaiedb.org/3/search/movie?query=${searchVal}&page=1&language=pl-PL&api_key=908c8ee616534e11d253631e8399c456`,
           )
         ).json();
 
@@ -49,29 +51,9 @@ export default function MovieListScreen({navigation}) {
         showLoading={isLoading}
       />
       {isLoading && <LinearProgress />}
+      {error && <ErrorView onCancel={() => setError(null)} />}
       {data && !isLoading && !error && (
-        <FlatList
-          data={data}
-          renderItem={({item}) => (
-            <TouchableOpacity
-              style={styles.movie}
-              onPress={() =>
-                navigation.navigate('Movie Details', {
-                  movieId: item.id,
-                  title: item.title,
-                })
-              }>
-              <MovieCard
-                title={item.title}
-                posterPath={item.poster_path}
-                details={[
-                  {name: 'popularity', value: item.popularity},
-                  {name: 'vote count', value: item.vote_count},
-                ]}
-              />
-            </TouchableOpacity>
-          )}
-        />
+        <MovieList data={data} navigation={navigation} />
       )}
     </View>
   );
@@ -85,9 +67,5 @@ const styles = StyleSheet.create({
   searchBar: {
     borderBottomWidth: 1,
     borderBottomColor: 'black',
-  },
-  movie: {
-    marginBottom: 10,
-    backgroundColor: 'red',
   },
 });

@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react';
 import {ScrollView} from 'react-native';
 import {LinearProgress} from 'react-native-elements';
 
+import ErrorView from '../components/ErrorView';
 import MovieCard from '../components/MovieCard';
 
 export default function MovieDetailsScreen({route}) {
@@ -10,8 +11,6 @@ export default function MovieDetailsScreen({route}) {
   const [error, setError] = useState();
 
   useEffect(async () => {
-    if (isLoading | error) return;
-
     setIsLoading(true);
 
     try {
@@ -39,18 +38,16 @@ export default function MovieDetailsScreen({route}) {
         productionCountries,
       });
     } catch (err) {
-      console.log(err);
       setError(err);
     }
 
     setIsLoading(false);
-  }, []);
-
-  console.log(data);
+  }, [route.params?.movieId]);
 
   return (
     <ScrollView>
       {isLoading && <LinearProgress color="primary" />}
+      {error && <ErrorView onCancel={() => setError(null)} />}
       {data && !isLoading && !error && (
         <MovieCard
           title={data.title}
