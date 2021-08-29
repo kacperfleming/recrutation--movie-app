@@ -25,8 +25,9 @@ export default function MovieListScreen({navigation}) {
             `https://api.themoviedb.org/3/search/movie?query=${searchVal}&page=1&language=pl-PL&api_key=908c8ee616534e11d253631e8399c456`,
           )
         ).json();
+        console.log(movieListData);
 
-        setData(movieListData);
+        setData(movieListData.results);
       } catch (err) {
         setError(err);
       }
@@ -37,9 +38,16 @@ export default function MovieListScreen({navigation}) {
     return () => clearTimeout(timeout);
   }, [searchVal]);
 
+  const searchHander = val => setSearchVal(val);
+
   return (
     <View style={styles.root}>
-      <SearchBar value={searchVal} onChangeText={val => setSearchVal(val)} />
+      <SearchBar
+        inputContainerStyle={styles.searchBar}
+        value={searchVal}
+        onChangeText={searchHander}
+        placeholder="Let's find a movie..."
+      />
       {isLoading && <LinearProgress />}
       {data && !isLoading && !error && (
         <FlatList
@@ -67,5 +75,9 @@ const styles = StyleSheet.create({
   root: {
     flex: 1,
     flexDirection: 'column',
+  },
+  searchBar: {
+    borderBottomWidth: 1,
+    borderBottomColor: 'black',
   },
 });
