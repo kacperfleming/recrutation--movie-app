@@ -12,7 +12,11 @@ export default function StackNavigator() {
     <NavigationContainer>
       <Stack.Navigator>
         <Stack.Screen name="Movie List" component={MovieListScreen} />
-        <Stack.Screen name="Movie Details" component={MovieDetailsScreen} />
+        <Stack.Screen
+          name="Movie Details"
+          component={MovieDetailsScreen}
+          options={({route}) => ({title: route.params.title})}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );
