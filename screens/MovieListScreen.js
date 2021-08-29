@@ -12,7 +12,7 @@ export default function MovieListScreen({navigation}) {
   const [searchVal, setSearchVal] = useState();
 
   useEffect(() => {
-    if (!searchVal | isLoading) return;
+    if (!searchVal) return;
 
     let timeout;
 
@@ -22,7 +22,7 @@ export default function MovieListScreen({navigation}) {
       try {
         const {results} = await (
           await fetch(
-            `https://api.themoviedb.org/3/search/movie?query=${searchVal}&page=1&language=pl-PL&api_key=908c8ee616534e11d253631e8399c456`,
+            `https://api.themoviedb.org/3/search/movie?query=${searchVal}&page=1&language=en&api_key=908c8ee616534e11d253631e8399c456`,
           )
         ).json();
 

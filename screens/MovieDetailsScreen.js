@@ -25,11 +25,9 @@ export default function MovieDetailsScreen({route}) {
         production_countries: productionCountries,
       } = await (
         await fetch(
-          `https://api.themoviedb.org/3/movie/${route.params.movieId}?language=pl-PL&api_key=908c8ee616534e11d253631e8399c456`,
+          `https://api.themoviedb.org/3/movie/${route.params.movieId}?language=en&api_key=908c8ee616534e11d253631e8399c456`,
         )
       ).json();
-
-      console.log(title);
 
       setData({
         title,
@@ -47,6 +45,8 @@ export default function MovieDetailsScreen({route}) {
 
     setIsLoading(false);
   }, []);
+
+  console.log(data);
 
   return (
     <ScrollView>

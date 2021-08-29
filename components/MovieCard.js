@@ -3,6 +3,15 @@ import {View, Text, StyleSheet} from 'react-native';
 import {Card} from 'react-native-elements';
 
 const MovieCard = props => {
+  let overview;
+  if (props.overview) {
+    overview = (
+      <View style={styles.description}>
+        <Card.Divider />
+        <Text style={styles.detail}>{props.overview}</Text>
+      </View>
+    );
+  }
   return (
     <Card containerStyle={styles.root}>
       <Card.Title style={styles.title}>{props.title}</Card.Title>
@@ -21,14 +30,7 @@ const MovieCard = props => {
           ))}
         </View>
       )}
-      {props.overview && (
-        <>
-          <Card.Divider />
-          <View style={styles.description}>
-            <Text style={styles.detail}>{props.overview}</Text>
-          </View>
-        </>
-      )}
+      {overview && overview}
     </Card>
   );
 };
