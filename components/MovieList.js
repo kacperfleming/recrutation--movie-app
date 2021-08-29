@@ -9,6 +9,7 @@ export default function MovieList({data, navigation}) {
       data={data}
       renderItem={({item}) => (
         <TouchableOpacity
+          activeOpacity={0.6}
           style={styles.movie}
           onPress={() =>
             navigation.navigate('Movie Details', {
@@ -33,6 +34,5 @@ export default function MovieList({data, navigation}) {
 const styles = StyleSheet.create({
   movie: {
     marginBottom: 10,
-    backgroundColor: 'red',
   },
 });

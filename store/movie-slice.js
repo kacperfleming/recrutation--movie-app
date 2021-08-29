@@ -11,6 +11,9 @@ const movieSlice = createSlice({
     incrementPage(state) {
       state.page += 1;
     },
+    decrementPage(state) {
+      state.page -= 1;
+    },
   },
 });
 

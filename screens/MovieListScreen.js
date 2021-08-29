@@ -1,12 +1,17 @@
 import React, {useState, useEffect} from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 import {SearchBar, LinearProgress} from 'react-native-elements';
+import {useSelector, useDispatch} from 'react-redux';
 
+import {movieActions} from '../store/movie-slice';
 import MovieList from '../components/MovieList';
 import ErrorView from '../components/ErrorView';
-import MoreButton from '../components/MoreButton';
+import PageControlPanel from '../components/PageControlPanel';
 
 export default function MovieListScreen({navigation}) {
+  const page = useSelector(state => state.movies.page);
+  const dispatch = useDispatch();
+
   const [data, setData] = useState();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState();
@@ -14,7 +19,7 @@ export default function MovieListScreen({navigation}) {
   const [searchVal, setSearchVal] = useState();
 
   useEffect(() => {
-    if (!searchVal | error) return;
+    if (!searchVal) return;
 
     let timeout;
 
@@ -24,9 +29,10 @@ export default function MovieListScreen({navigation}) {
       try {
         const {results} = await (
           await fetch(
-            `https://api.themovaiedb.org/3/search/movie?query=${searchVal}&page=1&language=pl-PL&api_key=908c8ee616534e11d253631e8399c456`,
+            `https://api.themoviedb.org/3/search/movie?query=${searchVal}&page=${page}&language=pl-PL&api_key=908c8ee616534e11d253631e8399c456`,
           )
         ).json();
+        console.log(results);
 
         setData(results);
       } catch (err) {
@@ -37,23 +43,31 @@ export default function MovieListScreen({navigation}) {
     }, 500);
 
     return () => clearTimeout(timeout);
-  }, [searchVal]);
-
-  const searchHander = val => setSearchVal(val);
+  }, [searchVal, page]);
 
   return (
     <View style={styles.root}>
       <SearchBar
         inputContainerStyle={styles.searchBar}
         value={searchVal}
-        onChangeText={searchHander}
+        onChangeText={val => setSearchVal(val)}
         placeholder="Let's find a movie..."
         showLoading={isLoading}
       />
       {isLoading && <LinearProgress />}
       {error && <ErrorView onCancel={() => setError(null)} />}
       {data && !isLoading && !error && (
-        <MovieList data={data} navigation={navigation} />
+        <>
+          <MovieList data={data} navigation={navigation} />
+          <PageControlPanel
+            page={page}
+            onIncrement={() => dispatch(movieActions.incrementPage())}
+            onDecrement={() => {
+              if (page < 2) return;
+              dispatch(movieActions.decrementPage());
+            }}
+          />
+        </>
       )}
     </View>
   );
