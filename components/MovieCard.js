@@ -6,21 +6,26 @@ const MovieCard = props => {
   return (
     <Card containerStyle={styles.root}>
       <Card.Title style={styles.title}>{props.title}</Card.Title>
-      <Card.Divider />
       <Card.Image
         containerStyle={styles.poster}
-        source={{uri: `https://image.tmdb.org/t/p/w500${props.posterPath}`}}
+        style={styles.image}
+        source={{uri: `https://image.tmdb.org/t/p/w400${props.posterPath}`}}
       />
-      <View style={styles.details}>
-        {props.details &&
-          props.details.map(detail => (
+      {props.details && props.details.length > 0 && (
+        <View style={styles.details}>
+          {props.details.map(detail => (
             <Text key={detail.name} style={styles.detail}>
               <Text style={styles.detailName}>{detail.name}: </Text>
               {detail.value}
             </Text>
           ))}
-      </View>
-      {props.description && <Text>{props.description}</Text>}
+        </View>
+      )}
+      {props.description && (
+        <View style={styles.details}>
+          <Text>{props.description}</Text>
+        </View>
+      )}
     </Card>
   );
 };
@@ -36,7 +41,13 @@ const styles = StyleSheet.create({
   },
   poster: {
     width: '100%',
+    height: 400,
     marginHorizontal: 0,
+  },
+  image: {
+    width: '100%',
+    height: '100%',
+    resizeMode: 'stretch',
   },
   details: {
     paddingHorizontal: 6,
