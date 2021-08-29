@@ -46,7 +46,7 @@ const styles = StyleSheet.create({
   },
   poster: {
     width: '100%',
-    height: 400,
+    height: 500,
     marginHorizontal: 0,
   },
   image: {

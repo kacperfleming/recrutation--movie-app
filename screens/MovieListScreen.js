@@ -32,7 +32,6 @@ export default function MovieListScreen({navigation}) {
             `https://api.themoviedb.org/3/search/movie?query=${searchVal}&page=${page}&language=pl-PL&api_key=908c8ee616534e11d253631e8399c456`,
           )
         ).json();
-        console.log(results);
 
         setData(results);
       } catch (err) {
