@@ -21,9 +21,7 @@ export default function MovieListScreen({navigation}) {
   useEffect(() => {
     if (!searchVal) return;
 
-    let timeout;
-
-    timeout = setTimeout(async () => {
+    const timeout = setTimeout(async () => {
       setIsLoading(true);
 
       try {

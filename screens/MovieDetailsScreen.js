@@ -10,38 +10,40 @@ export default function MovieDetailsScreen({route}) {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState();
 
-  useEffect(async () => {
-    setIsLoading(true);
+  useEffect(() => {
+    (async function () {
+      setIsLoading(true);
 
-    try {
-      const {
-        title,
-        overview,
-        poster_path: posterPath,
-        popularity,
-        vote_count: voteCount,
-        genres,
-        production_countries: productionCountries,
-      } = await (
-        await fetch(
-          `https://api.themoviedb.org/3/movie/${route.params.movieId}?language=pl-PL&api_key=908c8ee616534e11d253631e8399c456`,
-        )
-      ).json();
+      try {
+        const {
+          title,
+          overview,
+          poster_path: posterPath,
+          popularity,
+          vote_count: voteCount,
+          genres,
+          production_countries: productionCountries,
+        } = await (
+          await fetch(
+            `https://api.themoviedb.org/3/movie/${route.params.movieId}?language=pl-PL&api_key=908c8ee616534e11d253631e8399c456`,
+          )
+        ).json();
 
-      setData({
-        title,
-        overview,
-        posterPath,
-        popularity,
-        voteCount,
-        genres,
-        productionCountries,
-      });
-    } catch (err) {
-      setError(err);
-    }
+        setData({
+          title,
+          overview,
+          posterPath,
+          popularity,
+          voteCount,
+          genres,
+          productionCountries,
+        });
+      } catch (err) {
+        setError(err);
+      }
 
-    setIsLoading(false);
+      setIsLoading(false);
+    })();
   }, [route.params?.movieId]);
 
   return (
